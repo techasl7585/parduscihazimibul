@@ -16,7 +16,7 @@
 
 ### Kurulum
 
-1. [Pardus Cihazımı Bul 0.1.7 `.deb` paketini indirin.](https://github.com/techasl7585/parduscihazimibul/raw/main/pardus-cihazimi-bul_0.1.7_amd64.deb)
+1. [Pardus Cihazımı Bul 0.1.7 `.deb` paketini indirin.](https://github.com/techasl7585/parduscihazimibul/releases/download/v0.1.7/pardus-cihazimi-bul_0.1.7_amd64.deb)
 2. İndirilen pakete çift tıklayın.
 3. Pardus Paket Kurucu'da **Kur** düğmesine basın.
 4. İstendiğinde sistem parolanızı girin.
