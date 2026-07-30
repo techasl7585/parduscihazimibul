@@ -54,6 +54,9 @@ jobs:
           package="pardus-cihazimi-bul_${version}_amd64.deb"
           checksum="${package}.sha256"
 
+          git tag --force "$tag" "$GITHUB_SHA"
+          git push origin "refs/tags/${tag}" --force
+
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" "$package" "$checksum" --clobber
           else
