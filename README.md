@@ -1,130 +1,188 @@
 # Pardus Cihazımı Bul
 
-Pardus Cihazımı Bul, açık ve internete bağlı bir Pardus bilgisayarın son
-konumunu telefonda gösteren, tek düğmeli açık kaynaklı bir masaüstü
-uygulamasıdır.
+Pardus Cihazımı Bul, açık durumdaki bir Pardus bilgisayarın konumunu tek
+düğmeyle paylaşan ve aynı ağdaki telefon, tablet veya başka bir bilgisayardan
+web paneli üzerinden görüntüleyen açık kaynaklı bir cihaz konum uygulamasıdır.
 
-## İlk sürüm
+> Güncel sürüm: **0.1.7**  
+> Bu sürüm, aynı Wi-Fi ağı içinde çalışan yerel prototiptir.
 
-- Pardus tarafı tarayıcıda değil, yerel GTK masaüstü uygulamasında çalışır.
-- Kullanıcı tek bir **Konumumu Paylaş** düğmesine basar.
-- Konum paylaşımı kurulumdan sonra varsayılan olarak kapalıdır.
-- Kullanıcı paylaşımı durdurduğunda cihaz kaydı panelden kaldırılır.
-- Arka plan servisi sistem açılışında otomatik başlar.
-- Konumu Pardus Konum Servisi (GeoClue) üzerinden otomatik alır.
-- GeoClue; bilgisayardaki Wi-Fi, modem GPS, ağ GPS'i ve desteklenen diğer
-  konum kaynaklarından uygun olanı kullanır.
-- GPS olmayan bilgisayarlarda GeoClue sonuç vermezse uygulama bilgisayarın
-  gördüğü Wi-Fi ağlarını Positon ile konumlandırır.
-- Positon da sonuç üretemezse BeaconDB Wi-Fi/ağ konumu son yedek olarak
-  kullanılır; ayrı ve ücretli bir proje sunucusu gerekmez.
-- Konum telefondan değil, her zaman Pardus bilgisayarın kendi konum
-  kaynaklarından alınır.
-- Cihaz her 15 saniyede merkeze çevrim içi sinyali gönderir.
-- Telefon web panelinde çevrim içi/çevrim dışı durumu gösterilir.
-- Son görülme zamanı, yerel IP ve konum kaynağı gösterilir.
-- Konum OpenStreetMap üzerinde işaretlenir.
-- Telefon haritası paket içindeki Leaflet 1.9.4 ile etkileşimli çalışır.
-- Telefon erişimi 8 haneli kodla korunur.
+## İndir ve kur
 
-## Desteklenen sistem
+### Grafik arayüzle kurulum
 
-- Pardus 25 güncel masaüstü sürümü
-- x86_64/amd64 bilgisayar
-- İnternet bağlantısı
+1. [Pardus Cihazımı Bul 0.1.7 `.deb` paketini indirin.](https://github.com/techasl7585/parduscihazimibul/raw/main/pardus-cihazimi-bul_0.1.7_amd64.deb)
+2. İndirilen pakete çift tıklayın.
+3. Pardus Paket Kurucu'da **Kur** düğmesine basın.
+4. İstendiğinde sistem parolanızı girin.
+5. Uygulamalar menüsünden **Pardus Cihazımı Bul** uygulamasını açın.
 
-Uygulama Node.js, npm veya Flutter kullanmaz. Gerekli GeoClue ve Python
-bağlantıları `.deb` bağımlılığıdır; `apt install ./paket.deb` komutu bunları
-Pardus deposundan otomatik kurar.
+Terminal kullanmak zorunlu değildir. Kurulum paketi gerekli Python, GTK,
+GeoClue ve ağ bileşenlerini Pardus depolarından otomatik olarak kurar; arka plan
+servisini oluşturur ve sistem başlangıcında etkinleştirir.
 
-## Kurulum
+İlk kurulum sırasında bağımlılıkların indirilebilmesi için internet bağlantısı
+gerekir.
 
-GitHub deposundaki hazır `.deb` kurulum paketini indirin:
-
-[Pardus Cihazımı Bul 0.1.7 paketini indir](https://github.com/techasl7585/parduscihazimibul/raw/main/pardus-cihazimi-bul_0.1.7_amd64.deb)
+### Terminalle alternatif kurulum
 
 ```bash
 sudo apt install ./pardus-cihazimi-bul_0.1.7_amd64.deb
 ```
 
-Kurulum bittiğinde uygulamalar menüsünden **Pardus Cihazımı Bul** seçeneğini
-açın ve **Konumumu Paylaş** düğmesine basın. Arka plan servisi kurulum sırasında
-etkinleştirilir.
+## Ne işe yarar?
 
-## Web paneliyle deneme
+- Kullanıcı **Konumumu Paylaş** düğmesine basarak paylaşımı başlatır.
+- Bilgisayar kendi konumunu kendi konum kaynaklarıyla belirler.
+- Uygulama, aynı Wi-Fi ağından erişilebilen web paneli adresini gösterir.
+- Web paneli telefon, tablet ve bilgisayar tarayıcılarında çalışır.
+- Bilgisayarın konumu OpenStreetMap üzerinde işaretlenir.
+- Cihazın çevrim içi durumu, son görülme zamanı, yerel IP adresi ve konum
+  doğruluğu gösterilir.
+- Web paneli 8 haneli erişim koduyla korunur.
+- Kullanıcı paylaşımı durdurduğunda cihaz kaydı web panelinden kaldırılır.
 
-1. Bilgisayarda Pardus Cihazımı Bul uygulamasını açın.
+## Nasıl çalışır?
+
+```mermaid
+flowchart LR
+    A["Konumumu Paylaş"] --> B["Pardus konum kaynakları"]
+    B --> C["Yerel arka plan servisi"]
+    C --> D["Aynı ağdaki web paneli"]
+```
+
+Uygulama konumu aşağıdaki sırayla arar:
+
+1. **Pardus Konum Servisi (GeoClue):** GPS, modem ve desteklenen sistem konum
+   kaynaklarını kullanır.
+2. **Positon Wi-Fi konumu:** GeoClue sonuç vermezse bilgisayarın çevresinde
+   gördüğü Wi-Fi erişim noktalarından konum hesaplar.
+3. **BeaconDB:** Diğer kaynaklar sonuç üretmezse son yedek konum kaynağı olarak
+   kullanılır.
+
+Konum telefondan alınmaz. Telefon veya diğer cihaz yalnızca Pardus
+bilgisayarın paylaştığı konumu web panelinde görüntüler.
+
+## Kullanım
+
+1. Pardus bilgisayarda uygulamayı açın.
 2. **Konumumu Paylaş** düğmesine basın.
-3. Telefonu veya diğer cihazı bilgisayarla aynı Wi-Fi ağına bağlayın.
-4. Uygulamadaki web paneli adresini açıp 8 haneli kodu girin.
-5. Bilgisayarın konumu uygulama görünümlü mobil panelde açılır.
+3. Ekranda gösterilen web paneli adresini kopyalayın.
+4. Görüntüleme yapacağınız cihazı aynı Wi-Fi ağına bağlayın.
+5. Adresi cihazın web tarayıcısında açın.
+6. Uygulamada gösterilen 8 haneli erişim kodunu girin.
 
-Bu ilk yerel prototipte telefon ve merkez bilgisayar aynı ağda olmalıdır.
-Farklı ağlardan kullanım için merkez servisi internetteki HTTPS sunucuya
-kurulur ve Pardus ajanında yalnızca **Merkez web adresi** değiştirilir. Sunucu
-yayını ilk sürüme dahil değildir.
+Paylaşımı kapatmak için Pardus uygulamasındaki **Paylaşımı Durdur** düğmesine
+basın.
+
+## Sistem gereksinimleri
+
+| Gereksinim | Destek |
+|---|---|
+| İşletim sistemi | Pardus 25 masaüstü |
+| İşlemci mimarisi | x86_64 / amd64 |
+| Ağ | Bilgisayar ve görüntüleyen cihaz aynı Wi-Fi ağında |
+| İnternet | Kurulum, konum servisleri ve harita için gerekli |
+| GPS | Zorunlu değil |
+| Node.js / npm / Flutter | Gerekli değil |
 
 ## Konum doğruluğu
 
-Konum kaynağı Pardus Konum Servisi'dir. Bilgisayarda GPS donanımı varsa
-GeoClue GPS'i; yoksa Wi-Fi, modem veya ağ tabanlı konum kaynağını kullanabilir.
-Paket önce GeoClue'yu kullanır. GeoClue sonuç üretmezse uygulama
-NetworkManager'dan bilgisayarın gördüğü Wi-Fi erişim noktalarını alıp
-`https://api.positon.xyz/v1/geolocate` adresine sorgular. Positon sonucu
-alınamazsa `https://api.beacondb.net/v1/geolocate` son yedek olarak kullanılır.
-BeaconDB kapsaması bulunmazsa daha yaklaşık bir ağ/IP sonucu dönebilir. Hiçbir
-yöntem sonuç üretmezse uygulama konum kaynağının bulunamadığını açıkça gösterir.
+Konum doğruluğu bilgisayardaki donanıma, çevrede görülen Wi-Fi ağı sayısına ve
+konum sağlayıcılarının kapsamasına göre değişir.
 
-Sürüm 0.1.7, yarışma prototipinde Positon'ın çok düşük kullanım limitli `test`
-anahtarını kullanır. Dağıtıma çıkarken açık kaynak projeler için Positon'dan
-`admin@positon.xyz` adresi üzerinden proje anahtarı istenmeli ve aşağıdaki
-komutlarla kurulmalıdır:
+| Kaynak | Beklenen davranış |
+|---|---|
+| GeoClue ve GPS | Donanım destekliyorsa en hassas sonuç |
+| Positon Wi-Fi | Yakındaki Wi-Fi veritabanı kapsamasına göre yaklaşık sonuç |
+| BeaconDB | Son yedek; bazı bölgelerde şehir veya ağ seviyesinde sonuç |
 
-```bash
-printf '%s\n' 'ALINAN_ANAHTAR' | \
-  sudo tee /etc/pardus-cihazimi-bul/positon-api-key >/dev/null
-sudo chown root:pardus-find /etc/pardus-cihazimi-bul/positon-api-key
-sudo chmod 0640 /etc/pardus-cihazimi-bul/positon-api-key
-sudo systemctl restart pardus-cihazimi-bul.service
-```
+Geliştirme testinde 28 Wi-Fi erişim noktasıyla Positon yaklaşık **124 metre**
+doğruluk bildirmiştir. Bu değer tüm cihaz ve bölgeler için garanti değildir.
 
-## Geliştirici çalıştırması
+## Güvenlik ve gizlilik
+
+- Konum paylaşımı kurulumdan sonra varsayılan olarak kapalıdır.
+- Konum yalnızca kullanıcı paylaşımı açtığında alınır.
+- Ayarlar yalnızca Pardus bilgisayarın kendisinden değiştirilebilir.
+- Web paneli 8 haneli erişim koduyla korunur.
+- Arka plan servisi ayrı ve yetkisiz `pardus-find` sistem kullanıcısıyla
+  çalışır.
+- GeoClue sonuç vermezse yalnızca Wi-Fi erişim noktalarının BSSID ve sinyal
+  bilgileri konum hesaplaması için Positon'a, gerekirse BeaconDB'ye gönderilir.
+- Gizli ağlar ve adı `_nomap` ile biten ağlar sorguya dahil edilmez.
+- BeaconDB veri katkısı kapalıdır.
+- Bu sürüm internete açık bir merkez sunucusuna konum yayınlamaz.
+
+## Mevcut sürümün sınırları
+
+- Bilgisayar ile web panelini açan cihaz aynı Wi-Fi ağında olmalıdır.
+- Bilgisayar açık ve ağa bağlı olmalıdır.
+- Harita ve Wi-Fi konum servisleri için internet bağlantısı gerekir.
+- Positon'ın prototip `test` anahtarı düşük kullanım limitine sahiptir.
+- Farklı ağlardan veya internet üzerinden cihaz bulma henüz etkin değildir.
+
+## Geliştirici kurulumu
+
+Kaynak koddan çalıştırmak için:
 
 ```bash
 chmod +x run-dev.sh
 ./run-dev.sh
 ```
 
-Panel `http://127.0.0.1:8765` adresinde açılır.
+Yerel servis ve web paneli varsayılan olarak şu adreste açılır:
 
-## Paket oluşturma
+```text
+http://127.0.0.1:8765
+```
 
-Pardus/Debian sistemde:
+Testleri çalıştırmak için:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+`.deb` paketi oluşturmak için:
 
 ```bash
 chmod +x build-deb.sh
 ./build-deb.sh
 ```
 
-Paket `build/` klasörüne yazılır.
+Oluşturulan paket `build/` dizinine yazılır.
 
-## Güvenlik ve gizlilik
+## Proje yapısı
 
-- Konum paylaşımı panelden kapatılabilir.
-- Ayarlar yalnızca bilgisayarın kendisinden değiştirilebilir.
-- Telefon paneli erişim kodu ister.
-- Kurum anahtarı olmayan cihazlar merkeze veri gönderemez.
-- Uygulama servisi ayrı ve yetkisiz bir sistem kullanıcısıyla çalışır.
-- Konum paylaşımı açıldığında GeoClue sonuç vermezse uygulama, bilgisayarın
-  yakındaki Wi-Fi erişim noktalarının BSSID ve sinyal bilgilerini konum
-  hesaplaması için önce Positon'a, gerekirse BeaconDB'ye sorgular.
-- Gizli SSID'ler ve adı `_nomap` ile biten ağlar bu sorguya dahil edilmez.
-- BeaconDB'ye yeni GPS/Wi-Fi verisi katkısı `submit-data=false` ile kapalıdır.
-- İnternete yayınlanacak merkez mutlaka HTTPS arkasında çalıştırılmalıdır.
+| Yol | Açıklama |
+|---|---|
+| `src/native_app.py` | GTK masaüstü uygulaması |
+| `src/pardus_find/app.py` | Yerel HTTP servisi ve API |
+| `src/pardus_find/location.py` | GeoClue, Positon ve BeaconDB konum zinciri |
+| `src/pardus_find/web/` | Mobil uyumlu web paneli ve harita |
+| `packaging/rootfs/` | Pardus `.deb` paket dosyaları |
+| `tests/` | Uygulama ve paketleme testleri |
+| `build-deb.sh` | Kurulum paketi oluşturma betiği |
 
-## Kullanılan açık veriler
+## Yol haritası
 
-Harita OpenStreetMap verilerini kullanır. Konum öncelikle Pardus Konum
-Servisi'nden alınır; sonuç alınamazsa Positon Wi-Fi konumu, ardından BeaconDB
-Wi-Fi/ağ konumu yedek olarak kullanılır. Leaflet 1.9.4, BSD-2-Clause
-lisansıyla paket içinde dağıtılır.
+- Güvenli HTTPS merkez sunucusuyla farklı ağlardan erişim
+- Birden fazla Pardus cihazını tek panelde yönetme
+- Son bilinen konum geçmişi
+- Cihaz çevrim dışı olduğunda bildirim
+- Üretim kullanımı için proje API anahtarı
+- Ek güvenlik ve kurum yönetimi seçenekleri
+
+## Kullanılan bileşenler
+
+- Pardus Konum Servisi / GeoClue
+- Positon Wi-Fi konum servisi
+- BeaconDB
+- OpenStreetMap
+- Leaflet 1.9.4
+- GTK 3
+- Python 3
+
+## Lisans
+
+Bu proje [MIT Lisansı](LICENSE) ile yayımlanmaktadır.
