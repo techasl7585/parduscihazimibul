@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl stop pardus-cihazimi-bul.service >/dev/null 2>&1 || true
+    if [ "${1:-}" = "remove" ]; then
+        systemctl disable pardus-cihazimi-bul.service >/dev/null 2>&1 || true
+    fi
+fi
+
+exit 0

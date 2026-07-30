@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+
+SERVICE_USER="pardus-find"
+STATE_DIR="/var/lib/pardus-cihazimi-bul"
+CONFIG_DIR="/etc/pardus-cihazimi-bul"
+
+if ! getent group "$SERVICE_USER" >/dev/null 2>&1; then
+    addgroup --system "$SERVICE_USER" >/dev/null
+fi
+
+if ! getent passwd "$SERVICE_USER" >/dev/null 2>&1; then
+    adduser \
+        --system \
+        --ingroup "$SERVICE_USER" \
+        --home "$STATE_DIR" \
+        --no-create-home \
+        --disabled-login \
+        --disabled-password \
+        "$SERVICE_USER" >/dev/null
+fi
+
+install -d -m 0750 -o "$SERVICE_USER" -g "$SERVICE_USER" "$STATE_DIR"
+install -d -m 0750 -o root -g "$SERVICE_USER" "$CONFIG_DIR"
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl daemon-reload
+    systemctl enable pardus-cihazimi-bul.service >/dev/null
+    if [ -d /run/systemd/system ]; then
+        systemctl try-restart geoclue.service >/dev/null 2>&1 || true
+        systemctl restart pardus-cihazimi-bul.service
+    fi
+fi
+
+exit 0

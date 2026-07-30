@@ -1,0 +1,11 @@
+Package: pardus-cihazimi-bul
+Version: 0.1.7
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Pardus Cihazımı Bul Projesi
+Depends: python3 (>= 3.11), python3-gi, gir1.2-gtk-3.0, geoclue-2.0, gir1.2-geoclue-2.0, glib-networking, network-manager, adduser, ca-certificates, systemd
+Description: Pardus bilgisayarlar için kolay cihaz konum uygulaması
+ Açık ve internete bağlı Pardus bilgisayarın konumunu merkeze
+ gönderir; mobil uyumlu web panelinden cihaz durumunun ve konumunun
+ görüntülenmesini sağlar.

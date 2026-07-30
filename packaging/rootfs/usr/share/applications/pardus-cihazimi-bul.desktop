@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Pardus Cihazımı Bul
+GenericName=Cihaz Konum Paneli
+Comment=Açık Pardus bilgisayarın konumunu web panelinde göster
+Exec=pardus-cihazimi-bul
+Icon=pardus-cihazimi-bul
+Terminal=false
+Categories=Utility;System;
+Keywords=Pardus;cihaz;konum;bul;harita;
+StartupNotify=true

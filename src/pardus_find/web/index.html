@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#071a2b">
+    <title>Pardus Cihazımı Bul</title>
+    <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span>
+          <strong>Pardus</strong>
+          <small>Cihazımı Bul</small>
+        </span>
+      </a>
+      <div class="connection">
+        <span id="connectionDot" class="dot waiting"></span>
+        <span id="connectionText">Merkeze bağlanıyor</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">AÇIK CİHAZLARINIZ GÜVENDE</p>
+          <h1>Pardus bilgisayarınızın<br><span>nerede olduğunu görün.</span></h1>
+          <p class="hero-copy">
+            Cihazınız açık ve internete bağlıyken son konumunu güvenli web
+            paneline gönderir. Telefonunuzdan durumunu ve haritadaki yerini
+            görüntüleyebilirsiniz.
+          </p>
+        </div>
+        <div class="summary-card">
+          <div>
+            <span>Çevrim içi</span>
+            <strong id="onlineCount">—</strong>
+          </div>
+          <div>
+            <span>Toplam cihaz</span>
+            <strong id="deviceCount">—</strong>
+          </div>
+          <div>
+            <span>Son yenileme</span>
+            <strong id="refreshTime">—</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="device-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">CİHAZLAR</p>
+              <h2>Kayıtlı bilgisayarlar</h2>
+            </div>
+            <button id="refreshButton" class="icon-button" title="Yenile" type="button">↻</button>
+          </div>
+          <div id="deviceList" class="device-list">
+            <div class="empty-state">Cihaz bilgileri alınıyor…</div>
+          </div>
+        </aside>
+
+        <section class="map-panel">
+          <div id="mapPlaceholder" class="map-placeholder">
+            <span class="radar"></span>
+            <h2>Konum bekleniyor</h2>
+            <p>Açık bilgisayar konum gönderdiğinde harita burada görünecek.</p>
+          </div>
+          <div id="mapView" class="map-view" role="application" aria-label="Cihaz konumu haritası"></div>
+          <div id="deviceDetail" class="device-detail hidden">
+            <div class="device-title">
+              <span id="detailStatus" class="status-pill">Çevrim dışı</span>
+              <h2 id="detailName">Pardus Cihazı</h2>
+            </div>
+            <div class="detail-grid">
+              <div><span>Konum</span><strong id="detailLocation">—</strong></div>
+              <div><span>Son görülme</span><strong id="detailSeen">—</strong></div>
+              <div><span>Konum türü</span><strong id="detailSource">—</strong></div>
+              <div><span>Yerel IP</span><strong id="detailIp">—</strong></div>
+            </div>
+            <a id="openMapLink" class="map-link" target="_blank" rel="noopener noreferrer">
+              Büyük haritada aç
+            </a>
+          </div>
+        </section>
+      </section>
+
+      <section id="localTools" class="local-tools hidden">
+        <div class="tool-card accent-card">
+          <p class="eyebrow">TELEFONDAN BAĞLAN</p>
+          <h2>Telefon erişim kodu</h2>
+          <div id="viewerCode" class="viewer-code">••••••••</div>
+          <p>
+            Telefonunuz aynı Wi‑Fi ağına bağlıyken aşağıdaki adresi açın.
+            Açılan ekranda bu kodu girin. Proje geliştirildiğinde güvenli
+            merkez sunucusu üzerinden farklı ağlardan da çalışacaktır.
+          </p>
+          <a id="phoneUrl" class="phone-url" target="_blank" rel="noopener noreferrer">Adres hazırlanıyor…</a>
+        </div>
+
+        <div class="tool-card">
+          <p class="eyebrow">HASSAS KONUM</p>
+          <h2>Tarayıcı konumunu paylaş</h2>
+          <p>
+            Arka plan ajanı Pardus Konum Servisi ile konumu otomatik alır.
+            İsterseniz tarayıcı üzerinden anlık konum ölçümü de yapabilirsiniz.
+          </p>
+          <button id="preciseButton" class="primary-button" type="button">
+            Hassas konum izni ver
+          </button>
+          <p id="preciseMessage" class="form-message"></p>
+        </div>
+
+        <form id="settingsForm" class="tool-card">
+          <p class="eyebrow">MERKEZ AYARLARI</p>
+          <h2>Bu bilgisayarın bağlantısı</h2>
+          <label>
+            Cihaz adı
+            <input id="deviceName" name="device_name" autocomplete="off" required>
+          </label>
+          <label>
+            Merkez web adresi
+            <input id="centerUrl" name="center_url" type="url" required>
+          </label>
+          <label>
+            Kurum anahtarı
+            <input id="organizationKey" name="organization_key" autocomplete="off" required>
+          </label>
+          <label class="check-label">
+            <input id="locationEnabled" name="location_enabled" type="checkbox">
+            <span>Konum paylaşımı açık</span>
+          </label>
+          <button class="primary-button" type="submit">Ayarları kaydet</button>
+          <p id="settingsMessage" class="form-message"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <span>Pardus Cihazımı Bul · Açık kaynaklı konum prototipi</span>
+      <span>Harita © OpenStreetMap katkıcıları</span>
+    </footer>
+
+    <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <form id="loginForm" class="login-card">
+        <span class="brand-mark large" aria-hidden="true">P</span>
+        <p class="eyebrow">TELEFON ERİŞİMİ</p>
+        <h2 id="loginTitle">Cihazlarınıza bağlanın</h2>
+        <p>Bilgisayardaki web panelinde görünen 8 haneli erişim kodunu girin.</p>
+        <input
+          id="loginCode"
+          inputmode="numeric"
+          pattern="[0-9]{8}"
+          maxlength="8"
+          placeholder="00000000"
+          aria-label="8 haneli erişim kodu"
+          required
+        >
+        <button class="primary-button" type="submit">Konumu göster</button>
+        <p id="loginMessage" class="form-message error"></p>
+      </form>
+    </div>
+
+    <script src="/vendor/leaflet/leaflet.js" defer></script>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

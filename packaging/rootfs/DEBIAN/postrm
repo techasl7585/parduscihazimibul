@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+fi
+
+if [ "${1:-}" = "purge" ]; then
+    rm -f /var/lib/pardus-cihazimi-bul/config.json
+    rm -f /var/lib/pardus-cihazimi-bul/devices.sqlite3
+    rm -f /var/lib/pardus-cihazimi-bul/devices.sqlite3-shm
+    rm -f /var/lib/pardus-cihazimi-bul/devices.sqlite3-wal
+    rmdir /var/lib/pardus-cihazimi-bul >/dev/null 2>&1 || true
+    if getent passwd pardus-find >/dev/null 2>&1; then
+        deluser --system pardus-find >/dev/null 2>&1 || true
+    fi
+    if getent group pardus-find >/dev/null 2>&1; then
+        delgroup --system pardus-find >/dev/null 2>&1 || true
+    fi
+fi
+
+exit 0
