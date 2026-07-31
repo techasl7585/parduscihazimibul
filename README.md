@@ -12,7 +12,9 @@
   - İnternet Bağlantısı
   - Pardus Gnome
   - Bilgisayar ve konum görüntüleyen cihaz aynı Wi-Fi ağında olması gerekir (ilk sürüm)
-
+    
+## Önemli Not
+Eğer Konum Düşük hassasiyetle gösterirse uygulama 3 son seçenek olan BeaconDB ile bulmuştur gerçek konuma daha yakın hassas konum için sistemi daha hassas konum olan Positon servisi ile bulana kadar yani doğruluğu yüksek konumu bulana kadar (gerçek konumunuza en yakın konum) yeniden başlatın. Düşük hassasiyet kullanan BeaconDB servisi hiçbiri çalışmazsa yaklaşık konum bulmak için konulmuştur.
 
 ### Kurulum
 
@@ -57,7 +59,7 @@ Uygulama konumu aşağıdaki sırayla arar:
 1. **Pardus Konum Servisi (GeoClue):** GPS, modem ve desteklenen sistem konum
    kaynaklarını kullanır.
 2. **Positon Wi-Fi konumu:** GeoClue sonuç vermezse bilgisayarın çevresinde
-   gördüğü Wi-Fi erişim noktalarından konum hesaplar.
+   gördüğü Wi-Fi erişim noktalarından konum hesaplar. Yüksek Hassasiyet
 3. **BeaconDB:** Diğer kaynaklar sonuç üretmezse son yedek konum kaynağı olarak
-   kullanılır.
+   kullanılır. Düşük Hassasiyet
 
